@@ -78,11 +78,10 @@ def software_env():
 def prepare_mesa():
     archive=download(LOCK['mesa'],BUILD/'ci-tools')
     dest=BUILD/'ci-tools/mesa';dest.mkdir(parents=True,exist_ok=True)
-    # Windows bsdtar supports 7z. Inspect paths before extraction.
-    names=subprocess.check_output(['tar','-tf',str(archive)],text=True).splitlines()
-    if any(PurePosixPath(n).is_absolute() or '..' in PurePosixPath(n).parts or ':' in n or chr(92) in n for n in names):
-        raise RuntimeError('Unsafe Mesa archive path')
-    run(['tar','-xf',archive,'-C',dest],'extract-mesa')
+    # Runner tar builds do not all include LZMA. Use the pinned standalone
+    # 7zr and flatten just the requested file, without extracting archive paths.
+    extractor=download(LOCK['7zr'],BUILD/'ci-tools'/('7zip-'+LOCK['7zr']['version']))
+    run([extractor,'e',archive,'opengl32.dll','-o'+str(dest),'-y'],'extract-mesa')
     dll=dest/'opengl32.dll'
     if not dll.is_file():raise RuntimeError('Mesa archive has no opengl32.dll')
     for folder in [BUILD/'desktop',BUILD/'desktop/bin']:

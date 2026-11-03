@@ -13,6 +13,7 @@ checkout. The workflow does not restore project build, dependency or AOT caches.
   strict AOT and the full CTest suite (currently 79 tests).
 - Actual software OpenGL rendering. A hash-checked Mesa llvmpipe DLL is deployed
   only beside the CI executables; gl_backend_native verifies the active renderer.
+  A pinned standalone 7zr extracts the DLL without relying on runner tar codecs.
 - Web interpreter and wasm32 strict AOT builds, using Emscripten 5.0.3 and the
   explicitly selected Node 22.3.0 AOT generator. Strict mode refuses interpreter
   fallback, missing entries and missing imported helpers.
