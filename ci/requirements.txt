@@ -1,0 +1,4 @@
+cmake==3.31.6
+ninja==1.11.1.4
+Pillow==10.4.0
+playwright==1.60.0

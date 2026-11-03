@@ -1,0 +1,41 @@
+# dasSkia
+
+- This is a binding to Skia, with language/lifetime adapters and optional SDL GL presentation.
+- Preserve the public Skia object model. Do not add scene/material/render-plan frameworks.
+- Pin dependency commits in dependencies.json. Never patch third_party to fix binding behavior.
+- Raw Skia_* adapters use C++ linkage; they are not a stable C ABI. Keep ownership documented.
+- SkiaMatrix is a POD value adapter; do not expose SkMatrix private cached state in script containers.
+- Enum AOT value names omit the enum scope, which the pinned emitter adds automatically.
+- Copied pixel arrays are numeric unpremultiplied ARGB; validate region/length before access and keep native byte order internal.
+- JPEG/WebP use pinned Skia DEPS codecs with system libraries disabled on both targets. Encoders require CPU raster pixels; preserve native quality/downsample/alpha/lossless-effort semantics. Byte decoding owns a copy and remains deferred. Test independent fixtures, exact alpha/lossless pixels, lossy tolerances and independent Pillow decoding.
+- Text uses file-backed FreeType fonts, HarfBuzz and ICU on both platforms. No implicit OS-font fallback.
+- SkParagraph font collections seal at first builder; builders consume once, paragraphs retain text/styles/fonts. Layout before paint/metrics; preserve native empty-paragraph unresolved=-1.
+- Paragraph indices explicitly distinguish UTF-8 bytes and UTF-16 units; conversions reject interior bytes/surrogates. Range boxes are copied snapshots and preserve native grapheme/ellipsis semantics.
+- Grapheme navigation uses pinned ICU boundaries in logical order. Caret edges are an explicit affinity adapter over native bounds; unavailable, ellipsis and zero-size geometry yield None, not synthetic editing behavior.
+- Placeholder insertion mirrors native U+FFFC (3 UTF-8 bytes/1 UTF-16 unit) in all index tables. Placeholder bounds are native copied snapshots, not object IDs. Strut settings copy into builders; force height does not clip ink.
+- Paragraph foreground/background copy SkPaint and retain immutable effects; null clears flags. Style setters affect future builder/push snapshots. Font features preserve native ordered entries; validate four printable ASCII bytes and nonnegative int values.
+- Font arguments own copied variation coordinates. TTC face selection occurs at file registration; pinned FreeType clones retain that face. Fixtures/hashes/licenses are in assets/fonts and dependencies.json. Decoration/shadow/baseline controls and height behavior preserve native semantics.
+- Optional skia_sdl3_native uses real dasSDL3 types with one SDL/runtime. SkiaSDLTarget borrows SDL window/context; only flushes, never polls/swaps/destroys them. Default FBO 0, reset Ganesh before frames; release GPU objects before host context. Include imported sdl3_result in strict AOT.
+- SkiaSDLTexture owns only its streaming SDL texture and borrows the renderer. Upload requires matching CPU raster pixels, converts premul to straight RGBA directly into SDL lock pitch, and never renders/presents/polls. Resize is transactional for the texture; borrowed SDL_Texture expires after a successful size change. Destroy adapter before renderer.
+- Shaped text owns its blob/typefaces and copied glyph metadata; UTF-8 clusters are byte offsets.
+- Deploy icudtl.dat beside Windows executables; the web profile links its ICU data into WASM.
+- Keep text shape signatures and font asset hashes identical across desktop/web tests.
+- Surface/Image/Picture owned references use unref; Paint/Path/Recorder use delete; surface Canvas is borrowed.
+- Recording Canvas expires at finish or recorder destruction. Picture cull bounds are hints, not clips.
+- SKP is a versioned Skia format; test image/font preservation and native/WASM interchange separately.
+- Runtime effects use the public ES2 profile on both backends; validate uniform/child names, types and sizes before builder setters.
+- Runtime builders own effect/child refs; built effects are immutable snapshots. Matrix uniforms are column-major; SkiaMatrix remains row-major at the script boundary.
+- Runtime image filters require a shader-stage builder and a finite nonnegative sample radius; radius declares the sampling envelope, not a clamp.
+- Multi-input filter arrays borrow const filter pointers; factories copy names/retain refs. Normalize pointer-value const in binding callbacks before registration, not in daScript dependencies.
+- Advanced filters preserve native optional CropRect input/output semantics; valid null no-op results are distinct from factory errors. Convolution kernels are copied row-major and bias uses 0..255 units.
+- Boost uses standard Result, receiver-first pipes, named initialization and synchronous with_* blocks.
+- Resource pointers in blocks must not escape. Scope macros are not a linear ownership system.
+- Enter the defer block after acquisition. No panic/recover cleanup bridge. Body Err stays primary.
+- Keep draw/setter calls void when Skia reports no failure. Do not manufacture success guarantees.
+- Frame preparation returns error/unavailable/ready; skip unavailable frames before drawing/swapping. Resize invalidates borrowed Canvas. Web loss generations catch restoration between WASM frames; abandon Ganesh before releasing old surfaces, preserve host listeners/SDL ownership, and expose successful context generations for application GPU resources.
+- Test raster bytes, PNG roundtrip, save-count restoration, and GL/WebGL rendering separately.
+- Strict AOT must disable interpreter fallback. Web interpreter success does not establish Web AOT.
+- Generate web AOT with the wasm32 Node tool using browser virtual paths; never reuse native64 artifacts. Keep shared script inventory/imports current. Test missing entry and missing imported helper refusal, plus app_quit AOT. Negative helper calls must resist constant folding.
+- Build native and Web into separate build directories. Native MSVC/Ninja uses six jobs.
+- Keep logs under build/logs. Preserve unrelated work. Do not commit or publish without a request.
+- CI uses tools/ci.py stages and pinned ci/toolchains.json; preserve empty-tree bootstrap, dependency audits, software GL verification and interpreter/strict-AOT browser coverage.

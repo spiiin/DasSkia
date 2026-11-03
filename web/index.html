@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>dasSkia — WebGL 2</title>
+<style>body{background:#181c28;color:#e8edf8;font:16px system-ui;margin:24px}canvas{max-width:100%;border:0;outline:1px solid #607080}pre{white-space:pre-wrap}</style>
+<h1>dasSkia · Skia Ganesh / WebGL 2</h1>
+<p><a href="./">Basic shapes</a> · <a href="?script=/examples/codecs.das">JPEG and WebP</a> · <a href="?script=/examples/drawing.das">Drawing and images</a> · <a href="?script=/examples/text.das">Text and shaping</a> · <a href="?script=/examples/paragraph.das">Rich paragraphs</a> · <a href="?script=/examples/selection.das">Text selection</a> · <a href="?script=/examples/caret.das">Graphemes and carets</a> · <a href="?script=/examples/inline_layout.das">Placeholders and strut</a> · <a href="?script=/examples/text_style.das">Text paints and features</a> · <a href="?script=/examples/typography.das">Variable fonts and typography</a> · <a href="?script=/examples/effects.das">Shaders and filters</a> · <a href="?script=/examples/geometry.das">Path operations</a> · <a href="?script=/examples/picture.das">Recorded pictures</a> · <a href="?script=/examples/runtime.das">SkSL effects</a> · <a href="?script=/examples/filter_graph.das">Filter graphs</a> · <a href="?script=/examples/advanced_filters.das">Image processing</a>@DASSKIA_SDL3_LINK@</p>
+<canvas id="canvas" width="800" height="600" tabindex="0"></canvas><pre id="log"></pre>
+<script>
+var requestedScript=new URLSearchParams(location.search).get('script');
+var requestedArgs=requestedScript?[requestedScript]:[];
+if(new URLSearchParams(location.search).get('smoke')==='1')requestedArgs.push('--smoke-test');
+var Module={canvas:document.getElementById('canvas'),arguments:requestedArgs,
+ print:(s)=>{document.getElementById('log').textContent+=s+'\n';console.log(s)},
+ printErr:(s)=>{document.getElementById('log').textContent+=s+'\n';console.error(s)}};
+document.getElementById('canvas').addEventListener('webglcontextlost',e=>{
+ e.preventDefault();
+ document.getElementById('log').textContent+='WebGL context lost; rendering paused.\n';
+});
+document.getElementById('canvas').addEventListener('webglcontextrestored',()=>{
+ document.getElementById('log').textContent+='WebGL context restored; rendering resumes.\n';
+});
+</script><script src="dasSkia_runner.js"></script></html>

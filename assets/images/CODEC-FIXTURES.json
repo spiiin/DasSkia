@@ -1,0 +1,12 @@
+{
+  "description": "Procedural color quadrants, no third-party image content. JPEG opaque; WebP has alpha 128 and 0.",
+  "generator": {
+    "Pillow": "10.4.0",
+    "jpeg": "8.0",
+    "webp": "1.4.0"
+  },
+  "files": {
+    "fixture-alpha.webp": "88b5695173f6fcc06fa3ebee68bee752307f2a89a37c12a731d5167ea2d8c3f9",
+    "fixture-quadrants.jpg": "5a0f07d5ed2fb187bb6d40e592f967c7525254ace9a6b5e98980f1cb1e75c0d1"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "skia": {
+    "url": "https://github.com/google/skia.git",
+    "revision": "9d9ac365fe4916c31b31935a062b869d097324c4",
+    "branch": "chrome/m138"
+  },
+  "daScript": {
+    "url": "https://github.com/GaijinEntertainment/daScript.git",
+    "revision": "ebac0ffe46ab30de6c9536f4b0af7a33ede45902"
+  },
+  "SDL3": {
+    "url": "https://github.com/libsdl-org/SDL.git",
+    "revision": "fa2c02bb6e21974a89ea9824bc53c9932abe5f9c",
+    "tag": "release-3.4.16"
+  },
+  "emscripten": "5.0.3",
+  "example_font": {
+    "url": "https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.zip",
+    "archive_sha256": "7576310b219e04159d35ff61dd4a4ec4cdba4f35c00e002a136f00e96a908b0a",
+    "font_sha256": "7da195a74c55bef988d0d48f9508bd5d849425c1770dba5d7bfc6ce9ed848954",
+    "license_sha256": "7a083b136e64d064794c3419751e5c7dd10d2f64c108fe5ba161eae5e5958a93"
+  },
+  "text_font_assets": {
+    "skia_revision": "9d9ac365fe4916c31b31935a062b869d097324c4",
+    "Distortable.ttf": {
+      "source": "resources/fonts/Distortable.ttf",
+      "sha256": "4784320c43ca2fafca028350ea320de6fa731267a5d8ba015d4f62c5f27f9f55"
+    },
+    "Distortable-OFL.txt": {
+      "source": "Distortable.ttf nameID 13, normalized LF",
+      "sha256": "cfe48b39615d5472e90c8124471e8bcf54795290ac9127f79441a6d9b0835c80"
+    },
+    "ExampleCollection.ttc": {
+      "source": "Generated from Distortable.ttf and DejaVuSans.ttf with fontTools 4.55.3; original outlines/axes/names, timestamps preserved, SFNT checksums reserialized",
+      "sha256": "b2fdb41a9684315b6a04377b5e53c28c743098e614736f346de938f1938c8c38"
+    }
+  },
+  "dasSDL3": {
+    "url": "https://github.com/spiiin/dasSDL3.git",
+    "revision": "a13e01f1f8a42683d212d4498137d37732529478",
+    "native_snapshot": "clangbind",
+    "web_snapshot": "web/generated"
+  },
+  "image_codecs": {
+    "skia_revision": "9d9ac365fe4916c31b31935a062b869d097324c4",
+    "libjpeg-turbo": {
+      "url": "https://chromium.googlesource.com/chromium/deps/libjpeg_turbo.git",
+      "revision": "e14cbfaa85529d47f9f55b0f104a579c1061f9ad"
+    },
+    "libwebp": {
+      "url": "https://chromium.googlesource.com/webm/libwebp.git",
+      "revision": "845d5476a866141ba35ac133f856fa62f0b7445f"
+    }
+  },
+  "image_codec_fixtures": {
+    "fixture-alpha.webp": "88b5695173f6fcc06fa3ebee68bee752307f2a89a37c12a731d5167ea2d8c3f9",
+    "fixture-quadrants.jpg": "5a0f07d5ed2fb187bb6d40e592f967c7525254ace9a6b5e98980f1cb1e75c0d1"
+  }
+}
