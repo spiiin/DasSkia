@@ -64,6 +64,14 @@ jobs:
         run: python tools/ci.py build-web
       - name: Test Chromium and Firefox, interpreter and strict AOT
         run: python tools/ci.py test-web
+      - name: Prepare strict AOT demo
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: python tools/prepare_pages.py
+      - name: Upload strict AOT Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: build/web/aot-site
       - name: Upload logs, JUnit, diagnostics and screenshots
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -80,3 +88,47 @@ jobs:
             build/skia-web/args.gn
             build/desktop/CMakeCache.txt
             build/web/CMakeCache.txt
+
+  pages:
+    name: Publish strict AOT demo
+    needs: desktop-web
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - name: Deploy strict AOT artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+      - name: Verify published revision
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.request
+          url = os.environ['PAGES_URL'].rstrip('/') + '/build.json'
+          for attempt in range(30):
+              try:
+                  with urllib.request.urlopen(url + '?revision=' + os.environ['EXPECTED_SHA'], timeout=15) as response:
+                      info = json.load(response)
+                  if info['commit'] == os.environ['EXPECTED_SHA'] and info['strict_aot'] is True:
+                      print('Published strict AOT revision:', info['commit'])
+                      break
+              except (OSError, ValueError, KeyError):
+                  pass
+              time.sleep(5)
+          else:
+              raise SystemExit('Published Pages revision did not match this build')
+          PY

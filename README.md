@@ -4,6 +4,10 @@ daScript bindings to [Skia](https://skia.org/) for 2D graphics, images and Unico
 text. The same script API runs on Windows desktop and in the browser through
 WebAssembly, including strict AOT.
 
+**[Live demo — strict AOT](https://spiiin.github.io/DasSkia/)** ·
+[Effects](https://spiiin.github.io/DasSkia/?script=/examples/effects.das) ·
+[Text and OpenType](https://spiiin.github.io/DasSkia/?script=/examples/text_style.das)
+
 Use CPU raster surfaces, Skia's Ganesh OpenGL / WebGL 2 backend, or upload raster
 output to an existing dasSDL3 `SDL_Renderer`. An application can also attach Skia
 to its own dasSDL3 OpenGL window while retaining its event loop and presentation.

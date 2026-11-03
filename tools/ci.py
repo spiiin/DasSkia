@@ -140,7 +140,7 @@ def build_web(jobs,sdk):
 
 def lint():
     workflow=(ROOT/'.github/workflows/ci.yml').read_text()
-    for name in ['checkout','setup-python','setup-node','upload-artifact']:
+    for name in [key.removeprefix('actions/') for key in LOCK if key.startswith('actions/')]:
         if 'actions/'+name+'@'+LOCK['actions/'+name]['revision'] not in workflow:raise RuntimeError('Action pin mismatch: '+name)
     for field,key in [('python-version','python'),('node-version','node')]:
         if field+": '"+LOCK[key]+"'" not in workflow:raise RuntimeError('Workflow tool version mismatch: '+key)

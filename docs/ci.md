@@ -31,7 +31,10 @@ An always-run artifact step retains logs, native JUnit XML, dependency audits,
 renderer metadata, browser screenshots, GN arguments and CMake caches for 14 days.
 Download `validation-<run id>-<attempt>` from the Actions run. Build executables and
 Mesa binaries are not included. The workflow uses contents:read and does not keep
-checkout credentials. It does not publish packages or deploy examples.
+checkout credentials. After all checks pass on main, it uploads the strict AOT site and deploys it
+to [GitHub Pages](https://spiiin.github.io/DasSkia/). Pull requests and other
+branches do not deploy. Deployment verifies that build.json matches the checked
+commit. Only the deploy job receives pages:write and id-token:write permissions.
 
 ## Run the same stages locally
 

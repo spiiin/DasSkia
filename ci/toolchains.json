@@ -42,5 +42,17 @@
     "version": "26.05",
     "url": "https://github.com/ip7z/7zip/releases/download/26.05/7zr.exe",
     "sha256": "9bf582b894dfa665f852d7e9112b02290a1c303c2d95a21fcdc41ffcb03143b7"
+  },
+  "actions/configure-pages": {
+    "version": "v6.0.0",
+    "revision": "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
+  },
+  "actions/upload-pages-artifact": {
+    "version": "v5.0.0",
+    "revision": "fc324d3547104276b827a68afc52ff2a11cc49c9"
+  },
+  "actions/deploy-pages": {
+    "version": "v5.0.1",
+    "revision": "368f82528645a54fb793d4d04e342629a3f51346"
   }
 }
